@@ -27,7 +27,9 @@ Route.resource('data', 'TestsController')
 
 // api
 Route.group(() => {
+  // user
+  Route.post('/login', 'api/UsersController.login')
+  Route.post('/register', 'api/UsersController.register')
+  // note
   Route.resource('note', 'api/NotesController')
-})
-  .middleware('auth')
-  .prefix('api/v1')
+}).prefix('api/v1')
