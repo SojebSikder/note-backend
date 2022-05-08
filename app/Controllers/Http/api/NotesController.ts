@@ -59,14 +59,22 @@ export default class NotesController {
     }
   }
 
-  public async destroy({ request, response }: HttpContextContract) {
-    const id = request.param('id')
-    const data = await Note.findOrFail(id)
-    await data.delete()
+  public async destroy({ auth, request, response }: HttpContextContract) {
+    try {
+      await auth.use('api').authenticate()
+      const id = request.param('id')
+      const data = await Note.query().where('id', id).where('user_id', auth.user!.id).first()
+      await data!.delete()
 
-    return response.json({
-      status: 200,
-      message: 'Note delete successfully',
-    })
+      return response.json({
+        status: 200,
+        message: 'Note delete successfully',
+      })
+    } catch (error) {
+      return response.json({
+        status: 200,
+        message: 'Something went wrong',
+      })
+    }
   }
 }
