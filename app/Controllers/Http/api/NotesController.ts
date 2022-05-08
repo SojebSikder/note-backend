@@ -9,17 +9,11 @@ export default class NotesController {
   public async create({}: HttpContextContract) {}
 
   public async store({ request, response }: HttpContextContract) {
-    // const data = new Note()
 
-    // data.title = request.input('title')
-    // data.text = request.input('text')
-    // // insert in to the database
-    // await data.save()
-
-    const data = await Note.create({
-      title: request.input('title'),
-      text: request.input('text'),
-    })
+    const data = new Note()
+    data.title = request.input('title')
+    data.text = request.input('text')
+    await data.save()
 
     return response.json({
       status: 201,
