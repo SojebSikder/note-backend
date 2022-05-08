@@ -1,9 +1,16 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, HasOne, hasOne } from '@ioc:Adonis/Lucid/Orm'
+import User from './User'
 
 export default class Note extends BaseModel {
   @column({ isPrimary: true })
   public id: number
+
+  @column()
+  @hasOne(() => User, {
+    foreignKey: 'id', // defaults to userId
+  })
+  user_id: HasOne<typeof User>
 
   @column()
   title: string

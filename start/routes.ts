@@ -25,6 +25,9 @@ Route.get('/', async ({ view }) => {
 })
 Route.resource('data', 'TestsController')
 
+// api
 Route.group(() => {
   Route.resource('note', 'api/NotesController')
-}).prefix('api')
+})
+  .middleware('auth')
+  .prefix('api/v1')
