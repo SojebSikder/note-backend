@@ -10,5 +10,9 @@ export default class Note extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @column()
   title: string
+  @column()
+  text: string
 }
