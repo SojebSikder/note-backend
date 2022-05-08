@@ -27,26 +27,36 @@ export default class NotesController {
 
   public async edit({}: HttpContextContract) {}
 
-  public async update({ request, response }: HttpContextContract) {
-    const id = request.param('id')
-    const title = request.input('title')
-    const text = request.input('text')
+  public async update({ auth, request, response }: HttpContextContract) {
+    try {
+      await auth.use('api').authenticate()
 
-    const data = await Note.findOrFail(id)
-    if (title) {
-      data.title = title
+      const id = request.param('id')
+      const title = request.input('title')
+      const text = request.input('text')
+
+      // const data = await Note.findOrFail(id)
+      const data = await Note.query().where('id', id).where('user_id', auth.user!.id).first()
+      if (title) {
+        data!.title = title
+      }
+
+      if (text) {
+        data!.text = text
+      }
+
+      await data!.save()
+
+      return response.json({
+        status: 200,
+        message: 'Note updated successfully',
+      })
+    } catch (error) {
+      return response.json({
+        status: 200,
+        message: 'Something went wrong',
+      })
     }
-
-    if (text) {
-      data.text = text
-    }
-
-    await data.save()
-
-    return response.json({
-      status: 200,
-      message: 'Note updated successfully',
-    })
   }
 
   public async destroy({ request, response }: HttpContextContract) {
