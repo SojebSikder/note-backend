@@ -9,7 +9,6 @@ export default class NotesController {
   public async create({}: HttpContextContract) {}
 
   public async store({ request, response }: HttpContextContract) {
-
     const data = new Note()
     data.title = request.input('title')
     data.text = request.input('text')
@@ -25,7 +24,27 @@ export default class NotesController {
 
   public async edit({}: HttpContextContract) {}
 
-  public async update({}: HttpContextContract) {}
+  public async update({ request, response }: HttpContextContract) {
+    const id = request.param('id')
+    const title = request.input('title')
+    const text = request.input('text')
+
+    const data = await Note.findOrFail(id)
+    if (title) {
+      data.title = title
+    }
+
+    if (text) {
+      data.text = text
+    }
+
+    await data.save()
+
+    return response.json({
+      status: 200,
+      message: 'Note updated successfully',
+    })
+  }
 
   public async destroy({}: HttpContextContract) {}
 }
