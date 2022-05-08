@@ -46,5 +46,14 @@ export default class NotesController {
     })
   }
 
-  public async destroy({}: HttpContextContract) {}
+  public async destroy({ request, response }: HttpContextContract) {
+    const id = request.param('id')
+    const data = await Note.findOrFail(id)
+    await data.delete()
+
+    return response.json({
+      status: 200,
+      message: 'Note delete successfully',
+    })
+  }
 }
