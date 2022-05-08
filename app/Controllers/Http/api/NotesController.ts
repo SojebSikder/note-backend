@@ -1,5 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Note from 'App/Models/Note'
+import User from 'App/Models/User'
 
 export default class NotesController {
   public async index({}: HttpContextContract) {
@@ -8,8 +9,11 @@ export default class NotesController {
 
   public async create({}: HttpContextContract) {}
 
-  public async store({ request, response }: HttpContextContract) {
+  public async store({ auth, request, response }: HttpContextContract) {
+    await auth.use('api').authenticate()
+
     const data = new Note()
+    data.user_id = auth.user.id
     data.title = request.input('title')
     data.text = request.input('text')
     await data.save()
