@@ -3,8 +3,6 @@ import Note from 'App/Models/Note'
 
 export default class NotesController {
   public async index({ response }: HttpContextContract) {
-    // const result = await Note.all()
-    // const result = await Note.all()
     const result = await Note.query().preload('user')
 
     return response.json({
