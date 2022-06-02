@@ -6,7 +6,6 @@ export default class NotesController {
     // const result = await Note.all()
     // const result = await Note.all()
     const result = await Note.query().preload('user', (builder) => {
-      builder.where('id', '935f8281-95ec-4e56-89c4-fbceb5b4563e')
     })
 
     return response.json({
