@@ -2,8 +2,17 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Note from 'App/Models/Note'
 
 export default class NotesController {
-  public async index({}: HttpContextContract) {
-    return Note.all()
+  public async index({ response }: HttpContextContract) {
+    // const result = await Note.all()
+    // const result = await Note.all()
+    const result = await Note.query().preload('user', (builder) => {
+      builder.where('id', '935f8281-95ec-4e56-89c4-fbceb5b4563e')
+    })
+
+    return response.json({
+      status: 200,
+      data: result,
+    })
   }
 
   public async create({}: HttpContextContract) {}
@@ -68,7 +77,7 @@ export default class NotesController {
 
       return response.json({
         status: 200,
-        message: 'Note delete successfully',
+        message: 'Note deleted successfully',
       })
     } catch (error) {
       return response.json({
