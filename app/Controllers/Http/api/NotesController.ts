@@ -5,8 +5,7 @@ export default class NotesController {
   public async index({ response }: HttpContextContract) {
     // const result = await Note.all()
     // const result = await Note.all()
-    const result = await Note.query().preload('user', (builder) => {
-    })
+    const result = await Note.query().preload('user')
 
     return response.json({
       status: 200,
